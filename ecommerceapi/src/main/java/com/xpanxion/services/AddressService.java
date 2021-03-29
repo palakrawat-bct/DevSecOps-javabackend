@@ -26,11 +26,11 @@ public class AddressService {
 	}
 
 	public void updateDefaultAddress(AddressEntity defaultaddressid) {
-		int addressId = defaultaddressid.getAddress_id();
+		/*int addressId = defaultaddressid.getAddress_id();
 		int userId = defaultaddressid.getUser_id();
 		int defaultaddress=1;
-		repo.updateDefaultAddress(defaultaddress,addressId,userId);
-		//repo.save(defaultaddressid);
+		repo.updateDefaultAddress(defaultaddress,addressId,userId);*/
+		repo.save(defaultaddressid);
 		
 	}
 
