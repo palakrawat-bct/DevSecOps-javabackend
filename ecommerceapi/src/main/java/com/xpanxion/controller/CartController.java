@@ -33,9 +33,9 @@ public class CartController {
 		return services.getCartItems(id);
 	}
 	
-	@RequestMapping("/deletecartitem/{id}")
-	public void delteCartItem(@PathVariable int id) {
-		services.deleteCartItem(id);
+	@RequestMapping(method = RequestMethod.DELETE , value = "/deletecartitem")
+	public void delteCartItem(@RequestBody CartEntity cartid) {
+		services.deleteCartItem(cartid);
 	}
 
 }

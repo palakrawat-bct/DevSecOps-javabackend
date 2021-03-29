@@ -35,9 +35,10 @@ public class CartServices {
 		repo.updateCart(quantity, cart_id);*/
 	}
 
-	public void deleteCartItem(int id) {
+	public void deleteCartItem(CartEntity cartid) {
 		// TODO Auto-generated method stub
-		repo.deleteById(id);
+		int cartId = cartid.getCart_id();
+		repo.deleteById(cartId);
 	}
 
 	
