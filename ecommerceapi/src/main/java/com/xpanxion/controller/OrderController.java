@@ -3,6 +3,7 @@ package com.xpanxion.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xpanxion.entity.OrderEntity;
 import com.xpanxion.services.OrderServices;
-
+@CrossOrigin
 @RestController
 public class OrderController {
 	
@@ -19,8 +20,8 @@ public class OrderController {
 	private OrderServices services;
 	
 	 @RequestMapping(method = RequestMethod.POST,value = "/placeorder")
-	 public void addOrder(@RequestBody OrderEntity orderdetails) {
-		 services.addOrder(orderdetails);
+	 public OrderEntity addOrder(@RequestBody OrderEntity orderdetails) {
+		 return services.addOrder(orderdetails);
 	 }
 	 
 	 @RequestMapping("/getorder/{id}")

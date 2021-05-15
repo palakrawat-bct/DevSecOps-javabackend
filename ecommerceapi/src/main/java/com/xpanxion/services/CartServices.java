@@ -16,10 +16,11 @@ public class CartServices {
 	@Autowired
 	private CartRepository repo;
 
-	public void addToCart(CartEntity cartdetails) {
+	public CartEntity addToCart(CartEntity cartdetails) {
 		// TODO Auto-generated method stub
 		cartdetails.setTotal_amount(cartdetails.getQuantity()*cartdetails.getProduct_price());
-		repo.save(cartdetails);
+		
+		return repo.save(cartdetails);
 	}
 
 	public List<CartEntity> getCartItems(int id) {
@@ -35,10 +36,16 @@ public class CartServices {
 		repo.updateCart(quantity, cart_id);*/
 	}
 
-	public void deleteCartItem(CartEntity cartid) {
+	public void deleteCartItem(int cartid) {
 		// TODO Auto-generated method stub
-		int cartId = cartid.getCart_id();
-		repo.deleteById(cartId);
+		
+		repo.deleteById(cartid);
+	}
+
+	public void deletewholeCart(int id) {
+		// TODO Auto-generated method stub
+		repo.deletewholeCart(id);
+		
 	}
 
 	

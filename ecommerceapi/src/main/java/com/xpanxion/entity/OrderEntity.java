@@ -43,7 +43,7 @@ public class OrderEntity {
 	String product_name;
 	
 	@Column(name = "quantity")
-	int quantity;
+	String quantity;
 	
 	@Column(name = "payment_mode")
 	String payment_mode;
@@ -55,15 +55,15 @@ public class OrderEntity {
 	int discount_id;
 	
 	@Column(name = "product_price")
-	int product_price;
+	String product_price;
 
 	public OrderEntity() {
 		
 	}
 
 	public OrderEntity(int order_id, int user_id, int address_id, Date order_placed_on, Date shipped_onDate,
-			String order_stage, int total_amount, String is_delivered, String product_name, int quantity,
-			String payment_mode, int payment_status, int discount_id,int product_price) {
+			String order_stage, int total_amount, String is_delivered, String product_name, String quantity,
+			String payment_mode, int payment_status, int discount_id,String product_price) {
 		
 		this.order_id = order_id;
 		this.user_id = user_id;
@@ -81,11 +81,11 @@ public class OrderEntity {
 		this.product_price = product_price;
 	}
 
-	public int getProduct_price() {
+	public String getProduct_price() {
 		return product_price;
 	}
 
-	public void setProduct_price(int product_price) {
+	public void setProduct_price(String product_price) {
 		this.product_price = product_price;
 	}
 
@@ -161,11 +161,11 @@ public class OrderEntity {
 		this.product_name = product_name;
 	}
 
-	public int getQuantity() {
+	public String getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
 

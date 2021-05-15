@@ -14,9 +14,9 @@ public class OrderServices {
 	@Autowired
 	private OrderRepository repo;
 
-	public void addOrder(OrderEntity orderdetails) {
-		orderdetails.setTotal_amount(orderdetails.getQuantity()*orderdetails.getProduct_price());
-		repo.save(orderdetails);
+	public OrderEntity addOrder(OrderEntity orderdetails) {
+		
+		return repo.save(orderdetails);
 		
 	}
 
