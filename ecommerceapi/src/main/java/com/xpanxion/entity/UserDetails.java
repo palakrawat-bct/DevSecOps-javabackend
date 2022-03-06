@@ -35,7 +35,7 @@ public class UserDetails {
 	@Column(name="mobile_number")
 	String MobileNumber;
 	
-	@Column(name="user_password")
+	@Column(name="password")
 	String Password;
 	
 	@Column(name="date_of_birth")
