@@ -11,6 +11,6 @@ import java.util.*;
 public interface AdminRepository extends JpaRepository<AdminEntity,Integer>{
 
     @Query(value="SELECT * from admin where admin_username=?",nativeQuery = true)
-    List<AdminEntity> getLoginDetails(int id);
+    List<AdminEntity> getLoginDetails(String id);
 
 }

@@ -16,7 +16,7 @@ public class AdminController {
     private AdminServices service;
 
     @RequestMapping("/getlogindetails/{id}")
-    public List<AdminEntity> getLoginDetails(@PathVariable int id){
+    public List<AdminEntity> getLoginDetails(@PathVariable String id){
         return service.getLoginDetails(id);
     }
 

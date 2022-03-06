@@ -14,7 +14,7 @@ public class AdminServices {
 	@Autowired
 	private AdminRepository repo;
 	
-	public List<AdminEntity> getLoginDetails(int id){
+	public List<AdminEntity> getLoginDetails(String id){
 		return repo.getLoginDetails(id);
 		
 	}
