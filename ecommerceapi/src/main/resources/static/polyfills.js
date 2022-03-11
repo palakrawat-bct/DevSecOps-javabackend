@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/lib/jenkins/workspace/DevSecOps/DevSecOps/ecommerce/src/polyfills.ts */"hN/g");
+module.exports = __webpack_require__(/*! /var/lib/jenkins/workspace/demoapp/DevSecOps/ecommerce/src/polyfills.ts */"hN/g");
 
 
 /***/ }),
