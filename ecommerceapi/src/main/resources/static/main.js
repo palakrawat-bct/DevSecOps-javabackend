@@ -1061,7 +1061,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const baseUrl = "http://localhost:8080/";
+const baseUrl = "http://127.0.0.1:8080/";
 class ApiserviceService {
     constructor(http) {
         this.http = http;
