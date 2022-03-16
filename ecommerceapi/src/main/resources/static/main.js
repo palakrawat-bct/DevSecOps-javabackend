@@ -845,7 +845,7 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 const environment = {
-    production: false
+    production: false,
 };
 /*
  * For easier debugging in development mode, you can import the following file
@@ -1057,20 +1057,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ApiserviceService", function() { return ApiserviceService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _env_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../env.service */ "sXtk");
 
 
 
 
-const baseUrl = "http://127.0.0.1:8080/";
+
+var baseUrl = "";
 class ApiserviceService {
-    constructor(http) {
+    constructor(http, envService) {
         this.http = http;
+        this.envService = envService;
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]().set('x-access-token', 'Bearer');
         this.httpOptions = {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
                 'Content-Type': 'application/json'
             })
         };
+        baseUrl = envService.apiUrl;
     }
     getData(url) {
         console.log("In get service with url", baseUrl + url);
@@ -1089,14 +1093,14 @@ class ApiserviceService {
         return this.http.delete(baseUrl + url, this.httpOptions).pipe(data => data);
     }
 }
-ApiserviceService.ɵfac = function ApiserviceService_Factory(t) { return new (t || ApiserviceService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
+ApiserviceService.ɵfac = function ApiserviceService_Factory(t) { return new (t || ApiserviceService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_env_service__WEBPACK_IMPORTED_MODULE_2__["EnvService"])); };
 ApiserviceService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: ApiserviceService, factory: ApiserviceService.ɵfac, providedIn: 'root' });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ApiserviceService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }]; }, null); })();
+    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }, { type: _env_service__WEBPACK_IMPORTED_MODULE_2__["EnvService"] }]; }, null); })();
 
 
 /***/ }),
@@ -1453,6 +1457,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_login_admin_login_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./admin-login/admin-login.component */ "XLOz");
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/platform-browser/animations */ "R1ws");
 /* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/icon */ "NFeN");
+/* harmony import */ var _env_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./env.service */ "sXtk");
+
+
 
 
 
@@ -1473,7 +1480,12 @@ __webpack_require__.r(__webpack_exports__);
 class AppModule {
 }
 AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]] });
-AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [], imports: [[
+AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [{
+            provide: _angular_core__WEBPACK_IMPORTED_MODULE_1__["APP_INITIALIZER"],
+            useFactory: (envService) => () => envService.init(),
+            deps: [_env_service__WEBPACK_IMPORTED_MODULE_16__["EnvService"]],
+            multi: true
+        }], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
             _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HttpClientModule"],
@@ -1516,7 +1528,12 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                     _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_14__["BrowserAnimationsModule"],
                     _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__["MatIconModule"]
                 ],
-                providers: [],
+                providers: [{
+                        provide: _angular_core__WEBPACK_IMPORTED_MODULE_1__["APP_INITIALIZER"],
+                        useFactory: (envService) => () => envService.init(),
+                        deps: [_env_service__WEBPACK_IMPORTED_MODULE_16__["EnvService"]],
+                        multi: true
+                    }],
                 bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
             }]
     }], null, null); })();
@@ -1938,6 +1955,70 @@ NavbarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
                 styleUrls: ['./navbar.component.scss']
             }]
     }], function () { return [{ type: _services_apiservice_service__WEBPACK_IMPORTED_MODULE_1__["ApiserviceService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "sXtk":
+/*!********************************!*\
+  !*** ./src/app/env.service.ts ***!
+  \********************************/
+/*! exports provided: Environment, EnvService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Environment", function() { return Environment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnvService", function() { return EnvService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+var Environment;
+(function (Environment) {
+    Environment["Prod"] = "prod";
+    Environment["Test"] = "test";
+    Environment["Rel"] = "rel";
+})(Environment || (Environment = {}));
+class EnvService {
+    constructor() {
+        this._apiUrl = "";
+    }
+    get apiUrl() {
+        return this._apiUrl;
+    }
+    init() {
+        return new Promise(resolve => {
+            this.setEnvVariables();
+            resolve();
+        });
+    }
+    setEnvVariables() {
+        const hostname = window && window.location && window.location.hostname;
+        if (/^.*13.56.189.54.*/.test(hostname)) {
+            this._apiUrl = 'http://13.56.189.54:8080/';
+        }
+        else if (/^.*54.193.36.36.*/.test(hostname)) {
+            this._apiUrl = 'http://54.193.36.36:8080/';
+        }
+        else if (/^.*54.193.108.28.*/.test(hostname)) {
+            this._apiUrl = 'http://54.193.108.28:8080/';
+        }
+        else if (/^.*localhost.*/.test(hostname)) {
+            this._apiUrl = 'http://localhost:8080/';
+        }
+        else {
+            console.warn(`Cannot find environment for host name ${hostname}`);
+        }
+    }
+}
+EnvService.ɵfac = function EnvService_Factory(t) { return new (t || EnvService)(); };
+EnvService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: EnvService, factory: EnvService.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](EnvService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
+        args: [{
+                providedIn: 'root'
+            }]
+    }], function () { return []; }, null); })();
 
 
 /***/ }),
