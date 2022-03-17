@@ -2120,7 +2120,7 @@ class LoginComponent {
             console.log("Login result is ", result);
             if (result) {
                 console.log("Login success");
-                localStorage.setItem('user_id', '5');
+                localStorage.setItem('user_id', '7');
                 this.router.navigateByUrl('');
             }
             else {
