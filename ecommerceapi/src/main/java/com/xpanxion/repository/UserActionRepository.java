@@ -10,6 +10,6 @@ import com.xpanxion.entity.UserDetails;
 
 public interface UserActionRepository extends JpaRepository<UserDetails, Integer> {
 
-	@Query(value = "SELECT * from UserDetails where mobile_number=? and user_password=?",nativeQuery = true)
+	@Query(value = "SELECT * from UserDetails where mobile_number=? and password=?",nativeQuery = true)
 	List<UserDetails> findyBymobile(String MobileNumber,String password);
 }
