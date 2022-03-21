@@ -17,6 +17,23 @@
 		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
+		
+		<dependency>
+    			<groupId>io.gatling.highcharts</groupId>
+    			<artifactId>gatling-charts-highcharts</artifactId>
+    			<version>3.3.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.gatling</groupId>
+		    <artifactId>gatling-app</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.gatling</groupId>
+		    <artifactId>gatling-recorder</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
