@@ -59,8 +59,8 @@
 		</plugin>
 		
 		<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
+            <groupId>com.lazerycode.jmeter</groupId>
+    		<artifactId>jmeter-maven-plugin</artifactId>
             <version>3.8.4</version>
             <executions>
                <execution>
