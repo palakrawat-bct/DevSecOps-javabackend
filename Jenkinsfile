@@ -1,10 +1,6 @@
 pipeline{
     agent any
-
-    tools{
-        maven 'Maven'
-    }
-
+    
     environment{
         DOCKER_IMAGE_NAME = "foodkart_backend"
     }
