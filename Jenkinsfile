@@ -50,7 +50,7 @@ def maintainLatestFiveBuilds() {
 }
 
 def checkoutSCM(){
-    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-lab-devsecops', url: env.JAVA_REPO_URL]]])
+    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-hrugved', url: env.JAVA_REPO_URL]]])
     
 }
 
