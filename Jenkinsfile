@@ -56,6 +56,11 @@ def checkoutSCM(){
 
 def secretCheck(){
     script{
-        echo 'git leaks'
+        sh'''
+        docker pull zricethezav/gitleaks:latest
+        '''
+        docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
+        sh "gitleaks --source=/var/lib/jenkins/workspace/DevSecOps_Backend_Java/  detect"
+        }    
     }
 }
