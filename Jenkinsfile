@@ -30,6 +30,36 @@ pipeline{
                 secretCheck()
             }
         }
+
+        stage('Maven Unit Test'){
+            steps{
+                mavenUnitTest()
+            }
+        }
+
+        stage('Sonar Scan'){
+            steps{
+                sonarScan()
+            }
+        }
+
+        stage('Docker File Security'){
+            steps{
+                dockerFileSecurity()
+            }
+        }
+
+        stage('Build Docker Image'){
+            steps{
+                buildDockerImage()
+            }
+        }
+
+        stage("ECR Push & ECR Scan"){
+            steps{
+                ecrPushScan()
+            }
+        }
     }
 }
 
@@ -62,5 +92,40 @@ def secretCheck(){
         docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
         sh "gitleaks --source=/var/lib/jenkins/workspace/DevSecOps_Backend_Java/  detect"
         }    
+    }
+}
+
+def mavenUnitTest(){
+    script{
+        sh 'mvn test'
+    }
+}
+
+def sonarScan(){
+    script{
+        echo 'sonar scan'
+    }
+}
+
+def dockerFileSecurity(){
+    script{
+       sh'''
+       docker pull cr0hn/dockerfile-sec
+       '''
+       docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
+        sh "dockerfile-sec/var/lib/jenkins/workspace/DevSecOps_Backend_Java/ecommerceapi/Dockerfile"
+        }    
+    }
+}
+
+def buildDockerImage(){
+    script{
+        echo 'builing docker image'
+    }
+}
+
+def ecrPushScan(){
+    script{
+        echo 'ecr push and ecr scan'
     }
 }
