@@ -116,7 +116,7 @@ def dockerFileSecurity(){
        docker pull cr0hn/dockerfile-sec
        '''
        docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
-        sh "dockerfile-sec/var/lib/jenkins/workspace/DevSecOps_Backend_Java/ecommerceapi/Dockerfile"
+        sh "dockerfile-sec /var/lib/jenkins/workspace/DevSecOps_Backend_Java/ecommerceapi/Dockerfile"
         }    
     }
 }
