@@ -97,7 +97,10 @@ def secretCheck(){
 
 def mavenUnitTest(){
     script{
-        sh 'mvn test'
+        sh '''
+        cd ecommerceapi/
+        mvn test
+        '''
     }
 }
 
