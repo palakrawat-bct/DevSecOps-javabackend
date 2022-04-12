@@ -90,7 +90,7 @@ def secretCheck(){
         docker pull zricethezav/gitleaks:latest
         '''
         docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
-        sh "gitleaks --source=/var/lib/jenkins/workspace/DevSecOps_Backend_Java/  detect"
+        sh "gitleaks --source=/var/lib/jenkins/workspace/Java_Backend/  detect"
         }    
     }
 }
@@ -116,7 +116,7 @@ def dockerFileSecurity(){
        docker pull cr0hn/dockerfile-sec
        '''
        docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
-        sh "dockerfile-sec /var/lib/jenkins/workspace/DevSecOps_Backend_Java/ecommerceapi/Dockerfile"
+        sh "dockerfile-sec /var/lib/jenkins/workspace/Java_Backend/ecommerceapi/Dockerfile"
         }    
     }
 }
