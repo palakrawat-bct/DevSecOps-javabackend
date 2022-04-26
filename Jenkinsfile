@@ -107,6 +107,7 @@ def mavenUnitTest(){
 def sonarScan(){
     script{
         sh '''
+            cd ecommerceapi/
             mvn sonar:sonar \
             -Dsonar.projectKey=backend_java \
             -Dsonar.host.url=http://54.219.255.25:9000 \
