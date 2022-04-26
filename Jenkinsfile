@@ -43,6 +43,12 @@ pipeline{
             }
         }
 
+        stage('Quality Gate'){
+            steps{
+                qualityGate()
+            }
+        }
+
         stage('Docker File Security'){
             steps{
                 dockerFileSecurity()
@@ -113,6 +119,15 @@ def sonarScan(){
             -Dsonar.host.url=http://54.219.255.25:9000 \
             -Dsonar.login=7f142680193c076ea24720a7a2c200f047e41add
         '''
+    }
+}
+
+def qualityGate(){
+    script{
+        sh 'sleep 10'
+        timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: true
+        }
     }
 }
 
