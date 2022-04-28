@@ -3,6 +3,7 @@ pipeline{
     
     environment{
         DOCKER_IMAGE_NAME = "foodkart_backend"
+        
     }
 
     stages{
@@ -117,7 +118,7 @@ def sonarScan(){
             cd ecommerceapi/
             mvn sonar:sonar \
             -Dsonar.projectKey=backend_java \
-            -Dsonar.host.url=http://54.219.255.25:9000 \
+            -Dsonar.host.url=http://54.241.123.73:9000 \
             -Dsonar.login=7f142680193c076ea24720a7a2c200f047e41add
             '''
         }
@@ -147,6 +148,7 @@ def dockerFileSecurity(){
 def buildDockerImage(){
     script{
         echo 'builing docker image'
+
     }
 }
 
