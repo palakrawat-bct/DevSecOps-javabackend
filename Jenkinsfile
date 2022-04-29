@@ -3,7 +3,17 @@ pipeline{
     
     environment{
         DOCKER_IMAGE_NAME = "foodkart_backend"
-        
+        AWS_ACCOUNT_ID = "232120535331"
+        AWS_DEFAULT_REGION = "us-west-1" 
+        IMAGE_REPO_NAME = "devsecops-backend"
+        IMAGE_TAG = "latest"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        TASK_FAMILY = "devsecops-backend"
+        SERVICE_NAME = "DevSecOps-demo"
+        DESIRED_COUNT ="2" 
+        SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+        EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
+        CLUSTER_NAME = "DevSecOps-demo"
     }
 
     stages{
@@ -65,6 +75,11 @@ pipeline{
         stage("ECR Push & ECR Scan"){
             steps{
                 ecrPushScan()
+            }
+        }
+        stage("Deploy to ECS"){
+            steps{
+                ecsDeploy()
             }
         }
     }
@@ -147,13 +162,31 @@ def dockerFileSecurity(){
 
 def buildDockerImage(){
     script{
-        echo 'builing docker image'
+        docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
 
     }
 }
 
 def ecrPushScan(){
     script{
-        echo 'ecr push and ecr scan'
+        
+        sh '''
+            aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 232120535331.dkr.ecr.us-west-1.amazonaws.com
+            docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG
+            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+        '''
+    }
+}
+
+def ecsDeploy(){
+    script{
+        sh """sed -e "s;%REPOSITORY_URI%;${REPOSITORY_URI};g" -e "s;%VERSION%;${VERSION};g" -e "s;%TASK_FAMILY%;${TASK_FAMILY};g" -e "s;%SERVICE_NAME%;${SERVICE_NAME};g" -e "s;%EXECUTION_ROLE_ARN%;${EXECUTION_ROLE_ARN};g" taskdef.json > taskdef_${SHORT_COMMIT}.json"""
+
+                    sh "aws ecs register-task-definition --output json --cli-input-json file://${WORKSPACE}/taskdef_${SHORT_COMMIT}.json > ${env.WORKSPACE}/temp.json"
+                    
+                    def projects = readJSON file: "${env.WORKSPACE}/temp.json"
+                    def TASK_REVISION = projects.taskDefinition.revision
+
+                    sh "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --task-definition ${TASK_FAMILY}:${TASK_REVISION} --desired-count ${DESIRED_COUNT}"
     }
 }
