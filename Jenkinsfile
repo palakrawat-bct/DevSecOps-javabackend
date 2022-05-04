@@ -162,7 +162,10 @@ def dockerFileSecurity(){
 
 def buildDockerImage(){
     script{
-        docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+        dir("/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"){
+             docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+        }
+       
 
     }
 }
