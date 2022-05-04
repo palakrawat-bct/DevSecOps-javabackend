@@ -183,7 +183,7 @@ def ecrPushScan(){
 
 def ecsDeploy(){
     script{
-        sh """sed -e "s;%REPOSITORY_URI%;${REPOSITORY_URI};g" -e "s;%VERSION%;${VERSION};g" -e "s;%TASK_FAMILY%;${TASK_FAMILY};g" -e "s;%SERVICE_NAME%;${SERVICE_NAME};g" -e "s;%EXECUTION_ROLE_ARN%;${EXECUTION_ROLE_ARN};g" taskdef.json > taskdef_${SHORT_COMMIT}.json"""
+        sh """sed -e "s;%REPOSITORY_URI%;${REPOSITORY_URI};g" -e "s;%VERSION%;${IMAGE_TAG};g" -e "s;%TASK_FAMILY%;${TASK_FAMILY};g" -e "s;%SERVICE_NAME%;${SERVICE_NAME};g" -e "s;%EXECUTION_ROLE_ARN%;${EXECUTION_ROLE_ARN};g" taskdef.json > taskdef_${SHORT_COMMIT}.json"""
 
                     sh "aws ecs register-task-definition --output json --cli-input-json file://${WORKSPACE}/taskdef_${SHORT_COMMIT}.json > ${env.WORKSPACE}/temp.json"
                     
