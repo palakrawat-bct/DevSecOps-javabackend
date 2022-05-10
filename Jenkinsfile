@@ -14,15 +14,20 @@ pipeline{
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
         EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
         CLUSTER_NAME = "DevSecOps-demo"
+
+        JAVA_REPO_URL="https://gitlab.xpanxion.com/digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
+        REPO_PATH="/var/lib/jenkins/workspace/Java_Backend/"
+        DIR_PATH="/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"
+
     }
 
     stages{
         
-        stage('Initializing Environment'){
+        /*stage('Initializing Environment'){
             steps{
                 initializeEnvironment()
             }
-        }
+        }*/
 
         stage('Maintain Latest 5 Builds'){
             steps{
@@ -87,22 +92,22 @@ pipeline{
 
 //=============================================//
 
-def initializeEnvironment(){
+/*def initializeEnvironment(){
     cleanWs()
     //env.ANG_REPO_URL="https://gitlab.xpanxion.com/foodkart/xpanxion_angular_poc.git"
-    env.JAVA_REPO_URL="https://gitlab.xpanxion.com/digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
+    env.
     sh '''
         echo "PATH = ${PATH}"
         echo "M2_HOME = ${M2_HOME}"
     '''
-}
+}*/
 
 def maintainLatestFiveBuilds() {
 	properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '5'))])
 }
 
 def checkoutSCM(){
-    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-hrugved', url: env.JAVA_REPO_URL]]])
+    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-hrugved', url: JAVA_REPO_URL]]])
     
 }
 
@@ -112,30 +117,32 @@ def secretCheck(){
         docker pull zricethezav/gitleaks:latest
         '''
         docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
-        sh "gitleaks --source=/var/lib/jenkins/workspace/Java_Backend/  detect"
+        sh "gitleaks --source=${REPO_PATH}  detect"
         }    
     }
 }
 
 def mavenUnitTest(){
     script{
-        sh '''
-        cd ecommerceapi/
-        mvn test
-        '''
+        dir(${DIR_PATH}){
+            sh '''
+            mvn test
+            '''
+        }
     }
 }
 
 def sonarScan(){
     script{
         withSonarQubeEnv('SonarQube') {
-            sh '''
-            cd ecommerceapi/
-            mvn sonar:sonar \
-            -Dsonar.projectKey=backend_java \
-            -Dsonar.host.url=http://54.151.25.159:9000 \
-            -Dsonar.login=d851aaa280c82f004545caa8b4546b09a107660a
-            '''
+            dir(${DIR_PATH}){
+                sh '''
+                mvn sonar:sonar \
+                -Dsonar.projectKey=backend_java \
+                -Dsonar.host.url=http://54.151.25.159:9000 \
+                -Dsonar.login=d851aaa280c82f004545caa8b4546b09a107660a
+                '''
+            }
         }
     }
 }
@@ -151,18 +158,20 @@ def qualityGate(){
 
 def dockerFileSecurity(){
     script{
-       sh'''
-       docker pull cr0hn/dockerfile-sec
-       '''
-       docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
-        sh "dockerfile-sec /var/lib/jenkins/workspace/Java_Backend/ecommerceapi/Dockerfile"
-        }    
+        sh'''
+        docker pull cr0hn/dockerfile-sec
+        '''
+        dir(${DIR_PATH}){
+          docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
+            sh "dockerfile-sec -o results.json Dockerfile"
+            }   
+        }   
     }
 }
 
 def buildDockerImage(){
     script{
-        dir("/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"){
+        dir(${DIR_PATH}){
              docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
         }
        
