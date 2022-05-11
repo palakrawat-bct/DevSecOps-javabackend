@@ -15,6 +15,7 @@ pipeline{
         EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
         CLUSTER_NAME = "DevSecOps-demo"
 
+        SONAR_AUTH_TOKEN = "9d14c5196b218080627a9163eb0d6b2e46aabacc"
         JAVA_REPO_URL="https://gitlab.xpanxion.com/digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
         REPO_PATH="/var/lib/jenkins/workspace/Java_Backend/"
         DIR_PATH="/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"
@@ -139,7 +140,7 @@ def sonarScan(){
                 mvn sonar:sonar \
                 -Dsonar.projectKey=backend_java \
                 -Dsonar.host.url=http://18.144.27.119:9000 \
-                -Dsonar.login=
+                -Dsonar.login="${SONAR_AUTH_TOKEN}"
                 '''
             }
         }
