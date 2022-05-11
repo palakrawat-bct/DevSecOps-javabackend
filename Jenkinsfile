@@ -148,6 +148,7 @@ def sonarScan(){
                 -Dsonar.login="${SONAR_AUTH_TOKEN}"
                 '''
             }
+        }
     }
 }
 
