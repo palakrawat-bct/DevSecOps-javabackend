@@ -135,13 +135,18 @@ def mavenUnitTest(){
 def sonarScan(){
     script{
         withSonarQubeEnv('SonarQube') {
-            dir({DIR_PATH}){
-                sh '''
-                mvn sonar:sonar \
-                -Dsonar.projectKey=backend_java \
-                -Dsonar.host.url=http://18.144.27.119:9000 \
-                -Dsonar.login="${SONAR_AUTH_TOKEN}"
-                '''
+            try{
+                dir({DIR_PATH}){
+                    sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=backend_java \
+                    -Dsonar.host.url=http://18.144.27.119:9000 \
+                    -Dsonar.login="${SONAR_AUTH_TOKEN}"
+                    '''
+                }
+            }
+            catch(Exception e){
+                input("Do you want to proceed?")
             }
         }
     }
