@@ -142,7 +142,7 @@ def sonarScan(){
                 mvn sonar:sonar \
                 -Dsonar.projectKey=${SONAR_NAME} \
                 -Dsonar.host.url=${SONAR_URL} \
-                -Dsonar.login=9d14c5196b218080627a9163eb0d6b2e46aabacc
+                -Dsonar.login=
                 '''
             }
         }
