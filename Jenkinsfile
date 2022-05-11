@@ -116,7 +116,7 @@ def secretCheck(){
         docker pull zricethezav/gitleaks:latest
         '''
         docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
-        sh "gitleaks --source=${REPO_PATH}  detect"
+        sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
         }    
     }
 }
