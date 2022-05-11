@@ -122,9 +122,8 @@ def secretCheck(){
             }
         }
         catch(Exception e){
-                input("Do you want to proceed?")
-            }
-        }    
+            input("Do you want to proceed?")
+        }   
     }
 }
 
