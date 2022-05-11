@@ -9,7 +9,7 @@ pipeline{
         IMAGE_TAG = "latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         TASK_FAMILY = "devsecops-backend"
-        SERVICE_NAME = "DevSecOps-backend"
+        SERVICE_NAME = "DevSecOps-demo"
         DESIRED_COUNT ="2" 
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
         EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
