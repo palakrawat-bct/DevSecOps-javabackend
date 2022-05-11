@@ -139,7 +139,7 @@ def sonarScan(){
                 mvn sonar:sonar \
                 -Dsonar.projectKey=backend_java \
                 -Dsonar.host.url=http://18.144.27.119:9000 \
-                -Dsonar.login=9d14c5196b218080627a9163eb0d6b2e46aabacc
+                -Dsonar.login=
                 '''
             }
         }
