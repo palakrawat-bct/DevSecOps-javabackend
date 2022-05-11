@@ -123,7 +123,7 @@ def secretCheck(){
 
 def mavenUnitTest(){
     script{
-        dir(${DIR_PATH}){
+        dir({DIR_PATH}){
             sh '''
             mvn test
             '''
