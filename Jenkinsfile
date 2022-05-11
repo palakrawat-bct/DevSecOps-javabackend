@@ -129,7 +129,7 @@ def secretCheck(){
 
 def mavenUnitTest(){
     script{
-        dir({DIR_PATH}){
+        dir("${DIR_PATH}"){
             sh '''
             mvn test
             '''
@@ -140,7 +140,7 @@ def mavenUnitTest(){
 def sonarScan(){
     script{
         withSonarQubeEnv('SonarQube') {
-            dir({DIR_PATH}){
+            dir("${DIR_PATH}"){
                 sh '''
                 mvn sonar:sonar \
                 -Dsonar.projectKey=backend_java \
@@ -166,7 +166,7 @@ def dockerFileSecurity(){
         sh'''
         docker pull cr0hn/dockerfile-sec
         '''
-        dir(${DIR_PATH}){
+        dir("${DIR_PATH}"){
           docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
             sh "dockerfile-sec -o results.json Dockerfile"
             }   
@@ -176,7 +176,7 @@ def dockerFileSecurity(){
 
 def buildDockerImage(){
     script{
-        dir(${DIR_PATH}){
+        dir("${DIR_PATH}"){
              docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
         }
        
