@@ -18,7 +18,9 @@ pipeline{
         JAVA_REPO_URL="https://gitlab.xpanxion.com/digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
         REPO_PATH="/var/lib/jenkins/workspace/Java_Backend/"
         DIR_PATH="/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"
-
+        SONAR_URL='http://18.144.27.119:9000'
+        SONAR_KEY='9d14c5196b218080627a9163eb0d6b2e46aabacc'
+        SONAR_NAME='backend_java'
     }
 
     stages{
@@ -135,12 +137,12 @@ def mavenUnitTest(){
 def sonarScan(){
     script{
         withSonarQubeEnv('SonarQube') {
-            dir(${DIR_PATH}){
+            dir({DIR_PATH}){
                 sh '''
                 mvn sonar:sonar \
-                -Dsonar.projectKey=backend_java \
-                -Dsonar.host.url=http://54.151.25.159:9000 \
-                -Dsonar.login=d851aaa280c82f004545caa8b4546b09a107660a
+                -Dsonar.projectKey=${SONAR_NAME} \
+                -Dsonar.host.url=${SONAR_URL} \
+                -Dsonar.login=${SONAR_KEY}
                 '''
             }
         }
