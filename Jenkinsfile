@@ -113,11 +113,17 @@ def checkoutSCM(){
 
 def secretCheck(){
     script{
-        sh'''
-        docker pull zricethezav/gitleaks:latest
-        '''
-        docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
-        sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
+        try{
+            sh'''
+            docker pull zricethezav/gitleaks:latest
+            '''
+            docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
+                sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
+            }
+        }
+        catch(Exception e){
+                input("Do you want to proceed?")
+            }
         }    
     }
 }
@@ -135,20 +141,14 @@ def mavenUnitTest(){
 def sonarScan(){
     script{
         withSonarQubeEnv('SonarQube') {
-            try{
-                dir({DIR_PATH}){
-                    sh '''
-                    mvn sonar:sonar \
-                    -Dsonar.projectKey=backend_java \
-                    -Dsonar.host.url=http://18.144.27.119:9000 \
-                    -Dsonar.login="${SONAR_AUTH_TOKEN}"
-                    '''
-                }
+            dir({DIR_PATH}){
+                sh '''
+                mvn sonar:sonar \
+                -Dsonar.projectKey=backend_java \
+                -Dsonar.host.url=http://18.144.27.119:9000 \
+                -Dsonar.login="${SONAR_AUTH_TOKEN}"
+                '''
             }
-            catch(Exception e){
-                input("Do you want to proceed?")
-            }
-        }
     }
 }
 
