@@ -19,7 +19,7 @@ pipeline{
         REPO_PATH="/var/lib/jenkins/workspace/Java_Backend/"
         DIR_PATH="/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"
         SONAR_URL='http://18.144.27.119:9000'
-        SONAR_KEY=''
+        
         SONAR_NAME='backend_java'
     }
 
