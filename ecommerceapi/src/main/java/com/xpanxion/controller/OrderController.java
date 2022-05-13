@@ -14,6 +14,7 @@ import com.xpanxion.entity.OrderEntity;
 import com.xpanxion.services.OrderServices;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class OrderController {
 	
 	@Autowired

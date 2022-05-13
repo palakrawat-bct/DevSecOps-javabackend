@@ -10,6 +10,7 @@ import com.xpanxion.entity.AdminEntity;
 import java.util.*;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class AdminController {
 
     @Autowired

@@ -13,6 +13,7 @@ import com.xpanxion.entity.ProductEntity;
 import com.xpanxion.services.ProductServices;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class ProductController {
 	
 	@Autowired

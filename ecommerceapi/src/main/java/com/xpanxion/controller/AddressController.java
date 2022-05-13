@@ -14,6 +14,7 @@ import com.xpanxion.entity.AddressEntity;
 import com.xpanxion.services.AddressService;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class AddressController {
 
 	@Autowired

@@ -11,6 +11,7 @@ import com.xpanxion.entity.CategoriesEntity;
 import com.xpanxion.services.CategoriesServices;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class CategoriesController {
 	
 	@Autowired

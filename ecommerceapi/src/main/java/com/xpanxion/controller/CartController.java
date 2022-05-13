@@ -14,6 +14,7 @@ import com.xpanxion.entity.CartEntity;
 import com.xpanxion.services.CartServices;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class CartController {
 	
 	@Autowired

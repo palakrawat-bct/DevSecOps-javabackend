@@ -14,6 +14,7 @@ import com.xpanxion.entity.UserDetails;
 import com.xpanxion.services.UserActionServices;
 @CrossOrigin
 @RestController
+@RequestMapping("/server")
 public class UserActionController {
 	
 	@Autowired
