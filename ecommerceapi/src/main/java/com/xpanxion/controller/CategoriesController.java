@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xpanxion.entity.CategoriesEntity;
 import com.xpanxion.services.CategoriesServices;
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/server")
 public class CategoriesController {
