@@ -9,7 +9,7 @@ pipeline{
         IMAGE_TAG = "latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         TASK_FAMILY = "devsecops-backend"
-        SERVICE_NAME = "DevSecOps-demo"
+        SERVICE_NAME = "ecs-backend"
         DESIRED_COUNT ="2" 
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
         EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
@@ -144,7 +144,7 @@ def sonarScan(){
                 sh '''
                 mvn sonar:sonar \
                 -Dsonar.projectKey=backend_java \
-                -Dsonar.host.url=http://18.144.27.119:9000 \
+                -Dsonar.host.url=http://3.101.139.128:9000 \
                 -Dsonar.login="${SONAR_AUTH_TOKEN}"
                 '''
             }
