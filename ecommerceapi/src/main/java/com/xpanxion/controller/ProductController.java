@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xpanxion.entity.ProductEntity;
 import com.xpanxion.services.ProductServices;
-@CrossOrigin
+
 @RestController
 @RequestMapping("/server")
 public class ProductController {
