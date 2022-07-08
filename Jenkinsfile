@@ -57,9 +57,9 @@ pipeline{
             steps{
                 sonarScan()
             }
-        }
+        }*/
 
-       stage('Quality Gate'){
+       /* stage('Quality Gate'){
             steps{
                 qualityGate()
             }
