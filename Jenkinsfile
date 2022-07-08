@@ -53,7 +53,7 @@ pipeline{
             }
         }
 
-        stage('Sonar Scan'){
+        /*stage('Sonar Scan'){
             steps{
                 sonarScan()
             }
@@ -63,7 +63,7 @@ pipeline{
             steps{
                 qualityGate()
             }
-        }
+        }*/
 
         stage('Docker File Security'){
             steps{
