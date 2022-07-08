@@ -17,8 +17,8 @@ pipeline{
 
         SONAR_AUTH_TOKEN = "9d14c5196b218080627a9163eb0d6b2e46aabacc"
         JAVA_REPO_URL="https://gitlab.xpanxion.com/digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
-        REPO_PATH="/var/lib/jenkins/workspace/Java_Backend/"
-        DIR_PATH="/var/lib/jenkins/workspace/Java_Backend/ecommerceapi/"
+        REPO_PATH="/var/lib/jenkins/workspace/backend_pipeline/"
+        DIR_PATH="/var/lib/jenkins/workspace/backend_pipeline/ecommerceapi/"
     }
 
     stages{
