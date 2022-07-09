@@ -5,14 +5,14 @@ pipeline{
                     apiVersion: v1
                     kind: Pod
                     spec:
-                    containers:
-                    - name: maven
-                        image: maven:3.8.6-openjdk-11-slim
-                        securityContext:
-                        privileged: true
-                        env:
-                        - name: DOCKER_TLS_CERTDIR
-                            value: ""
+                        containers:
+                            - name: maven
+                              image: maven:3.8.6-openjdk-11-slim
+                              securityContext:
+                                 privileged: true
+                              env:
+                                - name: DOCKER_TLS_CERTDIR
+                                  value: ""
                     '''
         }
     }
