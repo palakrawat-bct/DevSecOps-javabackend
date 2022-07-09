@@ -79,8 +79,8 @@ pipeline{
             agent {
                     kubernetes {
                     containerTemplate {
-                            name 'docker'
-                            image 'docker'
+                            name 'dockerfile-sec'
+                            image 'cr0hn/dockerfile-sec'
                             ttyEnabled true
                             command 'cat'
                         }
@@ -184,13 +184,8 @@ def qualityGate(){
 def dockerFileSecurity(){
     script{
         sh'''
-        docker pull cr0hn/dockerfile-sec
+        "dockerfile-sec -o results.json Dockerfile
         '''
-        dir("${DIR_PATH}"){
-          docker.image('cr0hn/dockerfile-sec').inside('--entrypoint=""') {
-            sh "dockerfile-sec -o results.json Dockerfile"
-            }   
-        }   
     }
 }
 
