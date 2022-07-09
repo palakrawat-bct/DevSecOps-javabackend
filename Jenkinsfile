@@ -39,11 +39,9 @@ pipeline{
         }*/
 
         stage('Maintain Latest 5 Builds'){
-            container("maven"){
                 steps{
                     maintainLatestFiveBuilds()
                 }
-            }
             
         }
 
@@ -78,6 +76,16 @@ pipeline{
         }*/
 
         stage('Docker File Security'){
+            agent {
+                    kubernetes {
+                    containerTemplate {
+                            name 'docker'
+                            image 'docker'
+                            ttyEnabled true
+                            command 'cat'
+                        }
+                }
+            }
             steps{
                 dockerFileSecurity()
             }
