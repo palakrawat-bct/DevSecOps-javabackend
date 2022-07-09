@@ -4,6 +4,25 @@ pipeline {
       yamlFile 'jenkins-yaml/pod.yaml'
     }
   }
+  environment{
+        DOCKER_IMAGE_NAME = "foodkart_backend"
+        AWS_ACCOUNT_ID = "232120535331"
+        AWS_DEFAULT_REGION = "us-west-1" 
+        IMAGE_REPO_NAME = "devsecops-backend"
+        IMAGE_TAG = "latest"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        TASK_FAMILY = "devsecops-backend"
+        SERVICE_NAME = "ecs-backend"
+        DESIRED_COUNT ="2" 
+        SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+        EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
+        CLUSTER_NAME = "DevSecOps-demo"
+
+        SONAR_AUTH_TOKEN = "03baa10c2812ddd7e8be281c1d960a96c2029bf7"
+        JAVA_REPO_URL="git@gitlab.xpanxion.com:digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
+        REPO_PATH="/home/jenkins/agent/workspace/backend_pipeline/"
+        DIR_PATH="/home/jenkins/agent/workspace/backend_pipeline/ecommerceapi/"
+    }
   stages {
         stage('Maintain Latest 5 Builds'){
             steps{
