@@ -18,7 +18,7 @@ pipeline {
         EXECUTION_ROLE_ARN = "arn:aws:iam::232120535331:role/ecsTaskExecutionRole"
         CLUSTER_NAME = "DevSecOps-demo"
 
-        SONAR_AUTH_TOKEN = "03baa10c2812ddd7e8be281c1d960a96c2029bf7"
+        SONAR_AUTH_TOKEN = "squ_82495b972433a8d32ae75e442bc8884f663ebe34"
         JAVA_REPO_URL="git@gitlab.xpanxion.com:digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
         REPO_PATH="/home/jenkins/agent/workspace/backend_pipeline/"
         DIR_PATH="/home/jenkins/agent/workspace/backend_pipeline/ecommerceapi/"
@@ -47,6 +47,19 @@ pipeline {
                   mavenUnitTest()
           }
         }
+
+        stage('Sonar Scan'){
+            steps{
+                sonarScan()
+            }
+        }
+
+       stage('Quality Gate'){
+            steps{
+                qualityGate()
+            }
+        }
+
   }
 }
 
@@ -97,25 +110,29 @@ def mavenUnitTest(){
 }
 
 def sonarScan(){
-    script{
-        withSonarQubeEnv('SonarQube') {
-            dir("${DIR_PATH}"){
-                sh '''
-                mvn sonar:sonar \
-                -Dsonar.projectKey=backend_java \
-                -Dsonar.host.url=http://54.153.54.18:9000 \
-                -Dsonar.login="${SONAR_AUTH_TOKEN}"
-                '''
+    container('maven'){
+        script{
+            withSonarQubeEnv('SonarQube') {
+                dir("${DIR_PATH}"){
+                    sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=backend_java \
+                    -Dsonar.host.url=http://a2b34086ea7e443c098e3de3fc9b3d82-2041224770.us-west-1.elb.amazonaws.com:9000 \
+                    -Dsonar.login="${SONAR_AUTH_TOKEN}"
+                    '''
+                }
             }
         }
     }
 }
 
 def qualityGate(){
-    script{
-        sh 'sleep 10'
-        timeout(time: 1, unit: 'HOURS') {
-            waitForQualityGate abortPipeline: true
+    container('maven'){
+        script{
+            sh 'sleep 10'
+            timeout(time: 1, unit: 'HOURS') {
+                waitForQualityGate abortPipeline: true
+            }
         }
     }
 }
