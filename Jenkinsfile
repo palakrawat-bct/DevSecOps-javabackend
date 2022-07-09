@@ -133,7 +133,7 @@ def checkoutSCM(){
 
 def secretCheck(){
     script{
-
+        try {
             sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
         }
         catch(Exception e){
