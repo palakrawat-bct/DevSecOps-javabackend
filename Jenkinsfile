@@ -132,14 +132,19 @@ def checkoutSCM(){
 }
 
 def secretCheck(){
-    script{
-        try{
-            sh'''
-            docker pull zricethezav/gitleaks:latest
-            '''
-            docker.image('zricethezav/gitleaks').inside('--entrypoint=""') {
-                sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
+    agent {
+                    kubernetes {
+                    containerTemplate {
+                            name 'dockerfile-sec'
+                            image 'cr0hn/dockerfile-sec'
+                            ttyEnabled true
+                            command 'cat'
+                        }
+                }
             }
+    script{
+
+            sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
         }
         catch(Exception e){
             input("Do you want to proceed?")
