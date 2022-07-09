@@ -111,6 +111,7 @@ def mavenUnitTest(){
 
 def sonarScan(){
     container('maven'){
+        def scannerHome = tool 'sonarscan';
         script{
             withSonarQubeEnv('SonarQube') {
                 dir("${DIR_PATH}"){
