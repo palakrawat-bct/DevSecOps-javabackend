@@ -5,7 +5,6 @@ pipeline {
     }
   }
   stages {
-     container('maven') {
         stage('Maintain Latest 5 Builds'){
             steps{
                 maintainLatestFiveBuilds()
@@ -29,7 +28,6 @@ pipeline {
                   mavenUnitTest()
           }
         }
-    }
   }
 }
 
@@ -54,22 +52,27 @@ def checkoutSCM(){
 }
 
 def secretCheck(){
-    script{
-        try {
-            sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
+    
+     container('maven') {
+        script{
+            try {
+                sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
+            }
+            catch(Exception e){
+                input("Do you want to proceed?")
+            }   
         }
-        catch(Exception e){
-            input("Do you want to proceed?")
-        }   
-    }
+     }
 }
 
 def mavenUnitTest(){
-    script{
-        dir("${DIR_PATH}"){
-            sh '''
-            mvn test
-            '''
+    container('maven') {
+        script{
+            dir("${DIR_PATH}"){
+                sh '''
+                mvn test
+                '''
+            }
         }
     }
 }
