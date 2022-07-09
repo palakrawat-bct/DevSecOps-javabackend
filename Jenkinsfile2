@@ -5,15 +5,30 @@ pipeline {
     }
   }
   stages {
-    stage('Run maven') {
-      steps {
-        container('maven') {
-          sh 'mvn -version && aws sts get-caller-identity'
+     container('maven') {
+        stage('Maintain Latest 5 Builds'){
+            steps{
+                maintainLatestFiveBuilds()
+            }   
         }
-        container('busybox') {
-          sh '/bin/busybox'
+
+        stage('Checkout Source Code'){
+          steps{
+              checkoutSCM()
+          }
         }
-      }
+
+        stage('Check Secrets'){
+            steps{
+                  secretCheck()
+            }
+        }
+
+        stage('Maven Unit Test'){
+          steps{
+                  mavenUnitTest()
+          }
+        }
     }
   }
 }
