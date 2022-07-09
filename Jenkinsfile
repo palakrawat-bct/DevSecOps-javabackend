@@ -132,16 +132,6 @@ def checkoutSCM(){
 }
 
 def secretCheck(){
-    agent {
-                    kubernetes {
-                    containerTemplate {
-                            name 'dockerfile-sec'
-                            image 'cr0hn/dockerfile-sec'
-                            ttyEnabled true
-                            command 'cat'
-                        }
-                }
-            }
     script{
 
             sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
@@ -199,10 +189,12 @@ def dockerFileSecurity(){
 def buildDockerImage(){
     script{
         dir("${DIR_PATH}"){
-             docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+             docker.withTool('docker'){
+                sh script: '''
+                    docker build -t "${IMAGE_REPO_NAME}:${IMAGE_TAG}"  .
+                '''
+		     }
         }
-       
-
     }
 }
 
