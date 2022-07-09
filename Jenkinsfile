@@ -9,6 +9,10 @@ pipeline{
                 }
         }
     }
+
+    tools {
+        docker 'Docker'
+    }
     
     environment{
         DOCKER_IMAGE_NAME = "foodkart_backend"
@@ -114,7 +118,6 @@ pipeline{
 
 /*def initializeEnvironment(){
     cleanWs()
-    //env.ANG_REPO_URL="https://gitlab.xpanxion.com/foodkart/xpanxion_angular_poc.git"
     env.
     sh '''
         echo "PATH = ${PATH}"
