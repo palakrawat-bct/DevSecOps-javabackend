@@ -53,7 +53,7 @@ def checkoutSCM(){
 
 def secretCheck(){
     
-     container('maven') {
+     container('gitleaks') {
         script{
             try {
                 sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"

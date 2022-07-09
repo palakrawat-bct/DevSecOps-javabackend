@@ -7,12 +7,22 @@ metadata:
 spec:
   containers:
     - name: maven
-      image: 'maven:alpine'
+      image: 'maven:3.8.6-openjdk-11-slim'
+      command:
+            - cat
       tty: true
     - name: docker
       image: docker:19.03.1-dind
+      command:
+            - cat
+      tty: true
       securityContext:
         privileged: true
       env:
         - name: DOCKER_TLS_CERTDIR
           value: ""
+    - name: gitleaks
+      image: 'zricethezav/gitleaks'
+      command:
+            - cat
+      tty: true
