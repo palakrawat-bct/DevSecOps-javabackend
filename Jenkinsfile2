@@ -111,7 +111,6 @@ def mavenUnitTest(){
 
 def sonarScan(){
     container('maven'){
-        def scannerHome = tool 'sonarscan';
         script{
             sh '''
                     mvn sonar:sonar \
