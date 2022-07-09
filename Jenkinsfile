@@ -39,12 +39,10 @@ pipeline{
         }*/
 
         stage('Maintain Latest 5 Builds'){
-            container("maven){
                 steps{
                     maintainLatestFiveBuilds()
                 }
-            }
-            
+           
         }
 
         stage('Checkout Source Code'){
@@ -54,6 +52,16 @@ pipeline{
         }
 
         stage('Check Secrets'){
+            agent {
+                kubernetes {
+                    containerTemplate {
+                        name 'docker'
+                        image 'docker'
+                        ttyEnabled true
+                        command 'cat'
+                    }
+                }
+            }
             steps{
                 secretCheck()
             }
@@ -78,25 +86,46 @@ pipeline{
         }*/
 
         stage('Docker File Security'){
+            agent {
+                kubernetes {
+                    containerTemplate {
+                        name 'docker'
+                        image 'docker'
+                        ttyEnabled true
+                        command 'cat'
+                    }
+                }
+            }
             steps{
                 dockerFileSecurity()
             }
         }
 
         stage('Build Docker Image'){
-            steps{
-                buildDockerImage()
+            agent {
+                kubernetes {
+                    containerTemplate {
+                        name 'docker'
+                        image 'docker'
+                        ttyEnabled true
+                        command 'cat'
+                    }
+                }
             }
-        }
-
-        stage("ECR Push & ECR Scan"){
-            steps{
-                ecrPushScan()
+            stage('Build Docker Image'){
+                steps{
+                    buildDockerImage()
+                }
             }
-        }
-        stage("Deploy to ECS"){
-            steps{
-                ecsDeploy()
+            stage("ECR Push & ECR Scan"){
+                steps{
+                    ecrPushScan()
+                }
+            }
+            stage("Deploy to ECS"){
+                steps{
+                    ecsDeploy()
+                }
             }
         }
     }
