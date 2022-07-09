@@ -112,12 +112,14 @@ def mavenUnitTest(){
 def sonarScan(){
     container('maven'){
         script{
-            sh '''
+            dir("${DIR_PATH}"){
+                sh '''
                     mvn sonar:sonar \
                     -Dsonar.projectKey=backend_java \
                     -Dsonar.host.url=http://a2b34086ea7e443c098e3de3fc9b3d82-2041224770.us-west-1.elb.amazonaws.com:9000 \
                     -Dsonar.login="${SONAR_AUTH_TOKEN}"
-            '''
+              '''
+            }
         }
     }
 }
