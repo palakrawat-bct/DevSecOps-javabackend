@@ -85,7 +85,7 @@ pipeline{
             }
         }*/
 
-        stage('Docker File Security'){
+        stages{
             agent {
                 kubernetes {
                     containerTemplate {
@@ -96,22 +96,12 @@ pipeline{
                     }
                 }
             }
-            steps{
-                dockerFileSecurity()
-            }
-        }
-
-        stage('Build Docker Image'){
-            agent {
-                kubernetes {
-                    containerTemplate {
-                        name 'docker'
-                        image 'docker'
-                        ttyEnabled true
-                        command 'cat'
-                    }
+            stage('Docker File Security'){
+                steps{
+                    dockerFileSecurity()
                 }
             }
+            
             stage('Build Docker Image'){
                 steps{
                     buildDockerImage()
