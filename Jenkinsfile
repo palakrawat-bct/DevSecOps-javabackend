@@ -183,9 +183,11 @@ def qualityGate(){
 
 def dockerFileSecurity(){
     script{
-        sh'''
-            dockerfile-sec -o results.json Dockerfile
-        '''
+        dir("${DIR_PATH}"){
+            sh'''
+                dockerfile-sec -o results.json Dockerfile
+            '''
+        }
     }
 }
 
