@@ -11,7 +11,7 @@ pipeline{
     }
 
     tools {
-        docker 'Docker'
+        dockerTool 'docker'
     }
     
     environment{
