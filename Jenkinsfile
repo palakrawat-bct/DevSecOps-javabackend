@@ -6,6 +6,7 @@ pipeline{
                     image 'maven:3.8.6-openjdk-11-slim'
                     ttyEnabled true
                     command 'cat'
+                    privileged: true
                 }
         }
     }
