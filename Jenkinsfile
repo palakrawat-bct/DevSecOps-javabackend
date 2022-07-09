@@ -184,7 +184,7 @@ def qualityGate(){
 def dockerFileSecurity(){
     script{
         sh'''
-        "dockerfile-sec -o results.json Dockerfile
+            dockerfile-sec -o results.json Dockerfile
         '''
     }
 }
