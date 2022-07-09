@@ -189,11 +189,7 @@ def dockerFileSecurity(){
 def buildDockerImage(){
     script{
         dir("${DIR_PATH}"){
-             docker.withTool('docker'){
-                sh script: '''
-                    docker build -t "${IMAGE_REPO_NAME}:${IMAGE_TAG}"  .
-                '''
-		     }
+            def customImage = docker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
         }
     }
 }
