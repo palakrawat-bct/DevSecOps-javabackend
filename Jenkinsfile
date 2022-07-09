@@ -39,9 +39,12 @@ pipeline{
         }*/
 
         stage('Maintain Latest 5 Builds'){
-            steps{
-                maintainLatestFiveBuilds()
+            container("maven){
+                steps{
+                    maintainLatestFiveBuilds()
+                }
             }
+            
         }
 
         stage('Checkout Source Code'){
