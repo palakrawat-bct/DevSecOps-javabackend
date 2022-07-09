@@ -32,3 +32,110 @@ pipeline {
     }
   }
 }
+
+//=============================================//
+
+/*def initializeEnvironment(){
+    cleanWs()
+    env.
+    sh '''
+        echo "PATH = ${PATH}"
+        echo "M2_HOME = ${M2_HOME}"
+    '''
+}*/
+
+def maintainLatestFiveBuilds() {
+	properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '5'))])
+}
+
+def checkoutSCM(){
+    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-ssh-key', url: JAVA_REPO_URL]]])
+    
+}
+
+def secretCheck(){
+    script{
+        try {
+            sh "gitleaks --source=${REPO_PATH}  detect -r leak.json"
+        }
+        catch(Exception e){
+            input("Do you want to proceed?")
+        }   
+    }
+}
+
+def mavenUnitTest(){
+    script{
+        dir("${DIR_PATH}"){
+            sh '''
+            mvn test
+            '''
+        }
+    }
+}
+
+def sonarScan(){
+    script{
+        withSonarQubeEnv('SonarQube') {
+            dir("${DIR_PATH}"){
+                sh '''
+                mvn sonar:sonar \
+                -Dsonar.projectKey=backend_java \
+                -Dsonar.host.url=http://54.153.54.18:9000 \
+                -Dsonar.login="${SONAR_AUTH_TOKEN}"
+                '''
+            }
+        }
+    }
+}
+
+def qualityGate(){
+    script{
+        sh 'sleep 10'
+        timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
+}
+
+def dockerFileSecurity(){
+    script{
+        dir("${DIR_PATH}"){
+            sh'''
+                dockerfile-sec -o results.json Dockerfile
+            '''
+        }
+    }
+}
+
+def buildDockerImage(){
+    script{
+        dir("${DIR_PATH}"){
+            def customImage = docker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
+        }
+    }
+}
+
+def ecrPushScan(){
+    script{
+        
+        sh '''
+            aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 232120535331.dkr.ecr.us-west-1.amazonaws.com
+            docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG
+            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+        '''
+    }
+}
+
+def ecsDeploy(){
+    script{
+        sh """sed -e "s;%REPOSITORY_URI%;${REPOSITORY_URI};g" -e "s;%VERSION%;${IMAGE_TAG};g" -e "s;%TASK_FAMILY%;${TASK_FAMILY};g" -e "s;%SERVICE_NAME%;${SERVICE_NAME};g" -e "s;%EXECUTION_ROLE_ARN%;${EXECUTION_ROLE_ARN};g" taskdef.json > taskdef_${SHORT_COMMIT}.json"""
+
+                    sh "aws ecs register-task-definition --output json --cli-input-json file://${WORKSPACE}/taskdef_${SHORT_COMMIT}.json > ${env.WORKSPACE}/temp.json"
+                    
+                    def projects = readJSON file: "${env.WORKSPACE}/temp.json"
+                    def TASK_REVISION = projects.taskDefinition.revision
+
+                    sh "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --task-definition ${TASK_FAMILY}:${TASK_REVISION} --desired-count ${DESIRED_COUNT}"
+    }
+}
