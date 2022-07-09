@@ -1,5 +1,14 @@
 pipeline{
-    agent any
+    agent {
+            kubernetes {
+               containerTemplate {
+                    name 'maven'
+                    image 'maven:3.8.6-openjdk-11-slim'
+                    ttyEnabled true
+                    command 'cat'
+                }
+        }
+    }
     
     environment{
         DOCKER_IMAGE_NAME = "foodkart_backend"
@@ -16,9 +25,9 @@ pipeline{
         CLUSTER_NAME = "DevSecOps-demo"
 
         SONAR_AUTH_TOKEN = "03baa10c2812ddd7e8be281c1d960a96c2029bf7"
-        JAVA_REPO_URL="https://gitlab.xpanxion.com/digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
-        REPO_PATH="/var/lib/jenkins/workspace/backend_pipeline/"
-        DIR_PATH="/var/lib/jenkins/workspace/backend_pipeline/ecommerceapi/"
+        JAVA_REPO_URL="git@gitlab.xpanxion.com:digitalassetshub/devops/devsecops/DevSecOps_Java_Backend.git"
+        REPO_PATH="/home/jenkins/agent/workspace/backend_pipeline/"
+        DIR_PATH="/home/jenkins/agent/workspace/backend_pipeline/ecommerceapi/"
     }
 
     stages{
@@ -107,7 +116,7 @@ def maintainLatestFiveBuilds() {
 }
 
 def checkoutSCM(){
-    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-hrugved', url: JAVA_REPO_URL]]])
+    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-ssh-key', url: JAVA_REPO_URL]]])
     
 }
 
