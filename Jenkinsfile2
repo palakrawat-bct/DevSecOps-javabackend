@@ -36,6 +36,14 @@ pipeline {
           }
         }
 
+        stage("Docker Push"){
+            steps {
+                container("docker"){
+                    sh 'aws s3 ls'
+                }
+            }
+        }
+
         stage('Check Secrets'){
             steps{
                   secretCheck()
