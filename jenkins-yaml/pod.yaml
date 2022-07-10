@@ -26,3 +26,8 @@ spec:
       command:
             - cat
       tty: true
+    - name: dockerfile-sec
+      image: 'cr0hn/dockerfile-sec'
+      command:
+            - cat
+      tty: true

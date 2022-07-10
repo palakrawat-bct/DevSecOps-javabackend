@@ -54,9 +54,9 @@ pipeline {
             }
         }
 
-       stage('Quality Gate'){
+       stage('Docker File Security'){
             steps{
-                qualityGate()
+                dockerFileSecurity()
             }
         }
 
@@ -136,11 +136,13 @@ def qualityGate(){
 }
 
 def dockerFileSecurity(){
-    script{
-        dir("${DIR_PATH}"){
-            sh'''
-                dockerfile-sec -o results.json Dockerfile
-            '''
+    container('dockerfile-sec'){
+        script{
+            dir("${DIR_PATH}"){
+                sh'''
+                    dockerfile-sec -o results.json Dockerfile
+                '''
+            }
         }
     }
 }
