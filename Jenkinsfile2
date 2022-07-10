@@ -60,6 +60,12 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image'){
+            steps{
+                buildDockerImage()
+            }
+        }
+
   }
 }
 
@@ -148,9 +154,11 @@ def dockerFileSecurity(){
 }
 
 def buildDockerImage(){
-    script{
-        dir("${DIR_PATH}"){
-            def customImage = docker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
+    container('docker'){
+        script{
+            dir("${DIR_PATH}"){
+                def customImage = docker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
+            }
         }
     }
 }
