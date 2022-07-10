@@ -39,7 +39,7 @@ pipeline {
         stage("Docker Push"){
             steps {
                 container("docker"){
-                    sh 'aws s3 ls'
+                    sh 'docker version && aws s3 ls'
                 }
             }
         }
