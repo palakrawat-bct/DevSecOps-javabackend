@@ -13,6 +13,9 @@ spec:
       tty: true
     - name: docker
       image: docker:19.03.1-dind
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /usr/bin/docker:/usr/bin/docker
       command:
             - cat
       tty: true
