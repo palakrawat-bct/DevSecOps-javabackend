@@ -36,12 +36,6 @@ pipeline {
           }
         }
 
-        stage("Docker Push"){
-            steps {
-                sh 'aws s3 ls'
-            }
-        }
-
         stage('Check Secrets'){
             steps{
                   secretCheck()
@@ -69,6 +63,12 @@ pipeline {
         stage('Build Docker Image'){
             steps{
                 buildDockerImage()
+            }
+        }
+
+        stage("ECR Push & ECR Scan"){
+            steps{
+                ecrPushScan()
             }
         }
 
@@ -170,13 +170,14 @@ def buildDockerImage(){
 }
 
 def ecrPushScan(){
-    script{
-        
-        sh '''
-            aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 232120535331.dkr.ecr.us-west-1.amazonaws.com
-            docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG
-            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
-        '''
+    container('docker') {
+        script{
+            dir("${DIR_PATH}"){
+                docker.withRegistry("https://${REPOSITORY_URI}", "ecr:${AWS_DEFAULT_REGION}:aws-creds") {
+                    docker.image("${IMAGE_REPO_NAME}:${IMAGE_TAG}").push()
+                }
+             }
+        }
     }
 }
 
