@@ -156,7 +156,9 @@ def dockerFileSecurity(){
 def buildDockerImage(){
         script{
             dir("${DIR_PATH}"){
-                def customImage = docker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
+                def dockerHome = tool 'mydocker'
+                env.PATH = "${dockerHome}/bin:${env.PATH}"
+                def customImage = mydocker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
             }
         }
 }
