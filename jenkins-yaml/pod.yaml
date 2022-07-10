@@ -34,3 +34,5 @@ spec:
       command:
             - cat
       tty: true
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: Worker-Node-Group
