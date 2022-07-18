@@ -8,7 +8,7 @@ pipeline {
         DOCKER_IMAGE_NAME = "foodkart_backend"
         AWS_ACCOUNT_ID = "232120535331"
         AWS_DEFAULT_REGION = "us-west-1" 
-        IMAGE_REPO_NAME = "devsecops-backend"
+        IMAGE_REPO_NAME = "devsecops-backend1"
         IMAGE_TAG = "latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         TASK_FAMILY = "devsecops-backend"
