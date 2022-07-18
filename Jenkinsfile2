@@ -131,7 +131,7 @@ def sonarScan(){
                     -Dsonar.host.url=http://a19cfd23d34ef45e9b594293a7c5fe27-767681327.us-west-1.elb.amazonaws.com:9000 \
                     -Dsonar.login="${SONAR_AUTH_TOKEN}"
               '''
-              sh 'sudo yum install unzip'
+              sh 'yum install unzip'
               sh 'unzip -xvf /opt/sonarqube/data/governance/project_dumps/export/backend_java.zip'
               sh 'ls'
             }
