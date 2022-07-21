@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  foodkart-backend-service
-  namespace: dev
+  namespace: backend
   labels:
     app:  foodkart-backend-service
 spec:
