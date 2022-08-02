@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  foodkart-backend-service
+  namespace: backend
+  labels:
+    app:  foodkart-backend-service
+spec:
+  selector:
+    matchLabels:
+      app: foodkart-backend-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app:  foodkart-backend-service
+    spec:
+      containers:
+      - name:  foodkart-backend-service
+        image:  232120535331.dkr.ecr.us-west-1.amazonaws.com/devsecops-backend1
+        imagePullPolicy: Always
+        ports:
+          - name: http
+            containerPort: 8080
+      
