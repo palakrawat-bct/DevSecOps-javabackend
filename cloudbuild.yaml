@@ -3,7 +3,7 @@ steps:
  - name: 'gcr.io/cloud-builders/git'
    args: ['clone', 'https://github.com/zricethezav/gitleaks.git']
  - name: 'ubuntu'  
-   args: ['ls']
+   args: ['cd ecommerceapi']
  - name: maven:3-jdk-8
    entrypoint: mvn
    args: ['test']
