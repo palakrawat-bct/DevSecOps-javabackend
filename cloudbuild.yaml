@@ -6,6 +6,7 @@ steps:
    args: ['cd ecommerceapi']
  - name: maven:3-jdk-8
    entrypoint: mvn
+   path: '/ecommerceapi'
    args: ['test']
 # Build a docker image
  - name: 'gcr.io/cloud-builders/docker'
