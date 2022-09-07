@@ -1,0 +1,20 @@
+steps:
+# Gitleaks Security Checks
+ - name: 'gcr.io/cloud-builders/git'
+   args: ['clone', 'https://github.com/zricethezav/gitleaks.git']
+ - name: maven:3-jdk-8
+   entrypoint: mvn
+   args: ['test']
+# Build a docker image
+ - name: 'gcr.io/cloud-builders/docker'
+   args: [ 'build', '-t', 'gcr.io/devops-pod/backend', '--cache-from', 'gcr.io/devops-pod/backend', 'ecommerceapi/.' ]
+# Push the docker image to container registry
+ - name: 'gcr.io/cloud-builders/docker'
+   args: ["push", "gcr.io/devops-pod/backend"]
+# Deploy an image from Container Registry to Cloud Run
+ - name: 'gcr.io/cloud-builders/gcloud'
+   args: ['beta', 'run', 'deploy', 'tomcat', '--image', 'gcr.io/devops-pod/backend:latest', '--region', 'europe-west1', '--platform', 'managed', '--allow-unauthenticated']
+images:
+ - 'gcr.io/devops-pod/backend'
+options:
+ logging: CLOUD_LOGGING_ONLY
