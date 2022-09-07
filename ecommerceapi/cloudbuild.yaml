@@ -7,7 +7,7 @@ steps:
    args: ['test']
 # Build a docker image
  - name: 'gcr.io/cloud-builders/docker'
-   args: [ 'build', '-t', 'gcr.io/devops-pod/backend', '--cache-from', 'gcr.io/devops-pod/backend', '.' ]
+   args: [ 'build', '-t', 'gcr.io/devops-pod/backend', '--cache-from', 'gcr.io/devops-pod/backend', 'ecommerceapi/.' ]
 # Push the docker image to container registry
  - name: 'gcr.io/cloud-builders/docker'
    args: ["push", "gcr.io/devops-pod/backend"]
