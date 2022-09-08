@@ -1,4 +1,11 @@
 steps:
+# Pull the existing image
+ - name: 'gcr.io/cloud-builders/docker'
+   entrypoint: 'bash'
+   args:
+    - '-c'
+    - |
+      docker pull gcr.io/devops-pod/backend:latest || exit 0
 # Gitleaks Security Checks
  - name: 'gcr.io/cloud-builders/git'
    args: ['clone', 'https://github.com/zricethezav/gitleaks.git']
@@ -13,7 +20,7 @@ steps:
    args: ["push", "gcr.io/devops-pod/backend"]
 # Deploy an image from Container Registry to Cloud Run
  - name: 'gcr.io/cloud-builders/gcloud'
-   args: ['beta', 'run', 'deploy', 'tomcat', '--image', 'gcr.io/devops-pod/backend:latest', '--region', 'europe-west1', '--platform', 'managed', '--allow-unauthenticated']
+   args: ['beta', 'run', 'deploy', 'backend', '--image', 'gcr.io/devops-pod/backend:latest', '--region', 'europe-west1', '--platform', 'managed', '--allow-unauthenticated']
 images:
  - 'gcr.io/devops-pod/backend'
 options:
